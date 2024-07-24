@@ -50,7 +50,7 @@ dataLoader = ArcKaggleDataLoader("data/arc_kaggle/")
 You can then create the training datasets using the following code:
 
 ```python3
-dataset = dataLoader.create_full_text_training_dataset(type=DataType.EVALUATION,transposed=True,rotated=True,transpose_rotated=True)
+text_dataset = dataLoader.create_full_text_training_dataset(type=DataType.EVALUATION,transposed=True,rotated=True,transpose_rotated=True)
 ```
 
 ## Training
