@@ -114,7 +114,7 @@ Our finetuned Llama3 models with some data augmentation beats the GPT-4o Baselin
 ##### Correct Prediction Examples
 
 ![](README_files/20240723102108.png)
->"Restore the symmetric pattern"
+> *"Restore the symmetric pattern"*
 >   I am surprised the LLM managed to solve this correctly. The action needed is not complex, but learning that action seems unlikely. The transposed prediction repeated a previous output.
 
 ![](README_files/20240723102056.png)
