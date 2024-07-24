@@ -102,10 +102,10 @@ using this adapter, and our prepared data, we only need to specify some training
 The ARC contest allows up to two predictions for each challenge. As noted before, LLMs do not reason well over 2D, as they use the 1D text representation. For this reason, we create our two guesses by predicting the normal challenge and the transposed challenge. This should help the LLM to solve problems that require a lot of vertical argumentation. 
 
 We produce results for these tasks, and simply ignore predictions with generation errors. We use top-k inference with $k=50$. The idea here is that this will prevent some mistakes which greedy sampling could easily run into. In the end, we produce valid guesses for 339 of the 400 challenges.
-In these 339 guesses there are 51 correctly solved Problems! This corresponds to a score of $12.75\%$
+In these 339 guesses there are 51 correctly solved Problems! This corresponds to a score of **12.75%**
 
 
-| Num Problems | Predictions | Solved by any Guess | Solved by first Guess | Solved by second Guess |
+| Num Problems | Predictions | Solved by any Guess | Solved by first Guess | Solved by transposed Guess |
 | ------------ | ----------- | ------------------- | --------------------- | ---------------------- |
 | 400          | 339         | 51                  | 38                    | 28                     |
 
