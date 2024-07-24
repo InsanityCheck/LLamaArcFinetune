@@ -151,8 +151,9 @@ Using Lambda GPUs this training cost less than x$ and finished in y time, showin
 | Training Time      | 21207s (5h53m27s) | 12422s (3h27m02s) | 8243s (2h17m23s) |
 | Inference Time     | 7371s             | 8550s             | 7688s            |
 | Hourly Cost        | $0.75             | $1.29             | $2.49            |
-| Estimated Cost     | $5.95             | $7.50             | $11.02           |
 | Training only Cost | $4.42             | $4.45             | $5.70            |
+| Final Cost     | $5.95             | $7.50             | $11.02           |
+
 
 
 
