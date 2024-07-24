@@ -125,25 +125,25 @@ Our finetuned Llama3 models with some data augmentation beats the GPT-4o Baselin
 
 ### Correct Prediction Examples
 
-![](README_files/20240723102108.png)
+![](README_files/1_903d1b4a.png)
 > *"Restore the symmetric pattern"*
 >   This result was surprising. The action needed is not complex, but learning that action seems unlikely. The transposed prediction repeated a previous output.
 
-![](README_files/20240723102056.png)
+![](README_files/1_3979b1a8.png)
 > *"Extend the pattern, repeating the colors"*
 >   This is probably very easy, as the LLM can simply use a train output and remap the colors.
 
-![](README_files/20240723102041.png)
+![](README_files/1_12422b43.png)
 > *"Repeat the lines marked with grey"*
 
-![](README_files/20240723102012.png)
+![](README_files/1_281123b4.png)
 > This is an overlay task, Brown>Yellow>Blue>Grey. 
 
-![](README_files/20240723101932.png)
+![](README_files/1_d2acf2cb.png)
 > *"Draw a line between yellow points, permuting colors of cells between them" *
 >  Here we see that the transposed version has an easier time, as it has to draw lines from left to right instead of up to down.
 
-![](README_files/20240723101908.png)
+![](README_files/1_f45f5ca7.png)
 > *"Shift the pixels based on color"*
 >  This is probably rather easy to learn for the LLM. The transposed version struggles, as it has to do the same task but from top to bottom instead of left to right
 
@@ -182,28 +182,28 @@ Errors can be divided into 4 categories
 
 Here we show some interesting cherry picked examples of the latter two categories:
 
-![](README_files/21_60a26a3e.png)
+![](README_files/1_60a26a3e.png)
 >Slight misunderstanding of task
 
 
-![](README_files/21_84db8fc4.png)
+![](README_files/1_84db8fc4.png)
 > *Almost* correct prediction
 
-![](README_files/21_93b4f4b3.png)
+![](README_files/1_93b4f4b3.png)
 > Failure to fit shapes, probably not understanding task
 
 
-![](README_files/21_137f0df0.png)
+![](README_files/1_137f0df0.png)
 > Understands that inside of grey shape should be filled with red, does *almost* manage to add blue outside, but not quite
 
-![](README_files/21_319f2597.png)
+![](README_files/1_319f2597.png)
 > The non-transposed version manages to correctly draw the horizontal line, the vertical line does not work at all
 
-![](README_files/21_516b51b7.png)
+![](README_files/1_516b51b7.png)
 > Here the non-transposed prediction repeats a previous output. The transposed prediction almost understands the task, but fails to apply it completely
 
 
-![](README_files/21_0692e18c.png)
+![](README_files/1_0692e18c.png)
 > Complete misunderstanding of task, but color is predicted correctly.
 
 
