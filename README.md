@@ -1,9 +1,11 @@
+# Finetuning LLama3 on the ARC Prize
+
 
 The [ARC Prize](https://arcprize.org/) has recently started a Kaggle competition. Previously the contest was dominated by "DSL" algorithms, but this time around it seems like LLMs might take the cake.
 
 On public eval, Claude 3.5 and GPT-4o already achieve impressive results of 21% and 9% respectively at a Baseline.
 
-![[Pasted image 20240722164652.png]]
+![](Pasted image 20240722164652.png)
 (22.07.24 - https://arcprize.org/leaderboard ARC-AGI-Pub)
 
 
@@ -27,9 +29,9 @@ ARC Problems have a visual format, which introduces additional complexity for La
 For each challenge we create 7 additional challenges, corresponding to rotation and transposition+rotation of the original problem. 
 
 I.e. if this is a valid challenge:
-![[Pasted image 20240723105247.png|500]]
+![](Pasted image 20240723105247.png|500)
 Then so is this:
-![[Pasted image 20240723105234.png|500]]
+![](Pasted image 20240723105234.png|500)
 
 This not only helps the models to learn patterns in vertical directions, but also increases our training data size eight-fold!
 
@@ -37,7 +39,7 @@ This not only helps the models to learn patterns in vertical directions, but als
 
 We convert each of these problems into a simple text format, making sure that there are no tokenization issues. This is done by simply representing the matrix as a string and adding linebreaks for each new row. We additionally specify if a given matrix is an input or an output, and clearly mark the beginning and end of each example.
 
-![[arc 1.png]]
+![](arc 1.png)
 #### Training
 
 Using only the input-output examples for each Problem, we then finetune our model using 1-2 epochs on the collected data. To save some computation time and VRAM we use the unsloth library, which is easy to install:
@@ -89,7 +91,7 @@ model = FastLanguageModel.get_peft_model(
 
 and then we simply start training. 
 
-![[Pasted image 20240724090235.png]]
+![](Pasted image 20240724090235.png)
 
 #### Prediction
 
@@ -107,25 +109,25 @@ Our finetuned LLama3 models with some data augmentation beats the GPT-4o Baselin
 
 ##### Correct Prediction Examples
 
-![[Pasted image 20240723102108.png]]
+![](Pasted image 20240723102108.png)
 >"Restore the symmetric pattern"
    I am surprised the LLM managed to solve this correctly. The action needed is not complex, but learning that action seems unlikely. The transposed prediction repeated a previous output.
 
-![[Pasted image 20240723102056.png]]
+![](Pasted image 20240723102056.png)
 >"Extend the pattern, repeating the colors"
    This is probably very easy, at the LLM can simply use a train output and remap the colors.
 
-![[Pasted image 20240723102041.png]]
+![](Pasted image 20240723102041.png)
 > "Repeat the lines marked with grey"
 
-![[Pasted image 20240723102012.png]]
+![](Pasted image 20240723102012.png)
 > This is an overlay task, Brown>Yellow>Blue>Grey. 
 
-![[Pasted image 20240723101932.png]]
+![](Pasted image 20240723101932.png)
 > "Draw line between yellow points, permuting colors of cells between them" 
    Here we see that the transposed version has an easier time, as it has to draw lines from left to right instead of up to down.
 
-![[Pasted image 20240723101908.png]]
+![](Pasted image 20240723101908.png)
 > "Shift the pixels based on color"
    This is probably rather easy to learn for the LLM. The transposed version struggles, as it has to do the same task but from top to bottom instead of left to right
 
@@ -165,28 +167,28 @@ Errors can be divided into 4 categories
 
 Here we show some interesting cherry picked examples of the latter two categories:
 
-![[21_60a26a3e.png]]
+![](21_60a26a3e.png)
 >Slight misunderstanding of task
 
 
-![[21_84db8fc4.png]]
+![](21_84db8fc4.png)
 > *Almost* correct prediction
 
-![[21_93b4f4b3.png]]
+![](21_93b4f4b3.png)
 > Failure to fit shapes, probably not understanding task
 
 
-![[21_137f0df0.png]]
+![](21_137f0df0.png)
 > Understands that inside of grey shape should be filled with red, does *almost* manage to add blue outside, but not quite
 
-![[21_319f2597.png]]
+![](21_319f2597.png)
 > The non-transposed version manages to correctly draw the horizontal line, the vertical line does not work at all
 
-![[21_516b51b7.png]]
+![](21_516b51b7.png)
 > Here the non-transposed prediction repeats a previous output, the transposed prediction almost understands the task, but fails to apply it completely
 
 
-![[21_0692e18c.png]]
+![](21_0692e18c.png)
 > Complete misunderstanding of task, but color is predicted correctly.
 
 
