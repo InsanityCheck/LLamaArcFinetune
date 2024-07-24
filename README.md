@@ -5,7 +5,7 @@ The [ARC Prize](https://arcprize.org/) has recently started a Kaggle competition
 
 On public eval, Claude 3.5 and GPT-4o already achieve impressive results of 21% and 9% respectively at a Baseline.
 
-![](README_files/Pasted image 20240722164652.png)
+![](README_files/20240722164652.png)
 (22.07.24 - https://arcprize.org/leaderboard ARC-AGI-Pub)
 
 
@@ -28,9 +28,9 @@ ARC Problems have a visual format, which introduces additional complexity for La
 For each challenge we create 7 additional challenges, corresponding to rotation and transposition+rotation of the original problem. 
 
 I.e. if this is a valid challenge:
-![](README_files/Pasted image 20240723105247.png|500)
+![](README_files/20240723105247.png|500)
 Then so is this:
-![](README_files/Pasted image 20240723105234.png|500)
+![](README_files/20240723105234.png|500)
 
 This not only helps the models to learn patterns in vertical directions, but also increases our training data size eight-fold!
 
@@ -90,7 +90,7 @@ model = FastLanguageModel.get_peft_model(
 
 and then we simply start training. 
 
-![](README_files/Pasted image 20240724090235.png)
+![](README_files/20240724090235.png)
 
 #### Prediction
 
@@ -108,25 +108,25 @@ Our finetuned LLama3 models with some data augmentation beats the GPT-4o Baselin
 
 ##### Correct Prediction Examples
 
-![](README_files/Pasted image 20240723102108.png)
+![](README_files/20240723102108.png)
 >"Restore the symmetric pattern"
    I am surprised the LLM managed to solve this correctly. The action needed is not complex, but learning that action seems unlikely. The transposed prediction repeated a previous output.
 
-![](README_files/Pasted image 20240723102056.png)
+![](README_files/20240723102056.png)
 >"Extend the pattern, repeating the colors"
    This is probably very easy, at the LLM can simply use a train output and remap the colors.
 
-![](README_files/Pasted image 20240723102041.png)
+![](README_files/20240723102041.png)
 > "Repeat the lines marked with grey"
 
-![](README_files/Pasted image 20240723102012.png)
+![](README_files/20240723102012.png)
 > This is an overlay task, Brown>Yellow>Blue>Grey. 
 
-![](README_files/Pasted image 20240723101932.png)
+![](README_files/20240723101932.png)
 > "Draw line between yellow points, permuting colors of cells between them" 
    Here we see that the transposed version has an easier time, as it has to draw lines from left to right instead of up to down.
 
-![](README_files/Pasted image 20240723101908.png)
+![](README_files/20240723101908.png)
 > "Shift the pixels based on color"
    This is probably rather easy to learn for the LLM. The transposed version struggles, as it has to do the same task but from top to bottom instead of left to right
 
