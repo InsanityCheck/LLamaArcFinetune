@@ -115,24 +115,24 @@ Our finetuned Llama3 models with some data augmentation beats the GPT-4o Baselin
 
 ![](README_files/20240723102108.png)
 > *"Restore the symmetric pattern"*
->   I am surprised the LLM managed to solve this correctly. The action needed is not complex, but learning that action seems unlikely. The transposed prediction repeated a previous output.
+>   This result was surprising. The action needed is not complex, but learning that action seems unlikely. The transposed prediction repeated a previous output.
 
 ![](README_files/20240723102056.png)
->"Extend the pattern, repeating the colors"
+> *"Extend the pattern, repeating the colors"*
 >   This is probably very easy, as the LLM can simply use a train output and remap the colors.
 
 ![](README_files/20240723102041.png)
-> "Repeat the lines marked with grey"
+> *"Repeat the lines marked with grey"*
 
 ![](README_files/20240723102012.png)
 > This is an overlay task, Brown>Yellow>Blue>Grey. 
 
 ![](README_files/20240723101932.png)
-> "Draw a line between yellow points, permuting colors of cells between them" 
+> *"Draw a line between yellow points, permuting colors of cells between them" *
 >  Here we see that the transposed version has an easier time, as it has to draw lines from left to right instead of up to down.
 
 ![](README_files/20240723101908.png)
-> "Shift the pixels based on color"
+> *"Shift the pixels based on color"*
 >  This is probably rather easy to learn for the LLM. The transposed version struggles, as it has to do the same task but from top to bottom instead of left to right
 
 ---
