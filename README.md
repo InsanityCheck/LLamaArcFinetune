@@ -21,7 +21,7 @@ The whole training and inference pipeline runs for ~6h on A10 and ~3.5h on A100 
 
 
 
-### The Data
+## The Data
 
 
 ARC Problems have a visual format, which introduces additional complexity for Language Models, as they cannot easily reason over 2D data. To mitigate this we create additional ARC problems:
@@ -41,14 +41,14 @@ We convert each of these problems into a simple text format, making sure that th
 
 ![](README_files/arc1.png)
 
-### Training
+## Training
 
 We want to train our model on the input-output examples for each Problem. We aim for 3 epochs of training, as we want the model
 to learn the patterns in the data, but not to overfit.
 In order to do so, we opt to use the unsloth library, which claims fast training for LoRA adapters.
 
 
-##### Setup
+#### Setup
 
 Create and activate a virtual environment:
 ```bash
@@ -69,7 +69,7 @@ pip install "unsloth[cu121-torch220] @ git+https://github.com/unslothai/unsloth.
 and we are ready to go.
 
 
-##### The LoRA Adapter
+#### LoRA Adapter
 
 Using a LoRA adapter is simple, we load the model and then create an adapter using the `get_peft_model` function.
 
@@ -111,7 +111,7 @@ In these 339 guesses there are 51 correctly solved Problems! This corresponds to
 
 Our finetuned Llama3 models with some data augmentation beats the GPT-4o Baseline on the public eval dataset.
 
-##### Correct Prediction Examples
+### Correct Prediction Examples
 
 ![](README_files/20240723102108.png)
 > *"Restore the symmetric pattern"*
@@ -147,7 +147,7 @@ Even so, the model achieves an impressive accuracy and only rarely produces solu
 
 
 
-#### Training time and costs
+## Training time and costs
 
 |                    | A10               | A100              | H100             |
 | ------------------ | ----------------- | ----------------- | ---------------- |
