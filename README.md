@@ -3,7 +3,7 @@
 
 The [ARC Prize](https://arcprize.org/) has recently started a Kaggle competition. Previously the contest was dominated by "DSL" algorithms, but this time around it seems like LLMs might take the cake.
 
-On public eval, Claude 3.5 and GPT-4o already achieve impressive results of 21% and 9% respectively at a Baseline.
+On public eval, Claude 3.5 and GPT-4o already achieve results of 21% and 9% respectively at a Baseline.
 
 ![](README_files/20240722164652.png)
 
@@ -11,7 +11,7 @@ On public eval, Claude 3.5 and GPT-4o already achieve impressive results of 21% 
 
 
 So it seems prudent to check how far simple LLM approaches can go. 
-We will try to do this *cheaply* and *quickly*, which is why we will finetune Llama3-8B using a LoRA, achieving $12.75\%$ accuracy on the public eval task, *beating GPT-4o* using less than $10 in compute cost.
+We will try to do this *cheaply* and *quickly*, which is why we will finetune Llama3-8B using a LoRA, achieving **12.75%** accuracy on the public eval task, *beating GPT-4o* using less than $10 in compute cost.
 
 #### Hardware
 
