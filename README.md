@@ -39,7 +39,7 @@ This not only helps the models to learn patterns in vertical directions, but als
 
 We convert each of these problems into a simple text format, making sure that there are no tokenization issues. This is done by simply representing the matrix as a string and adding linebreaks for each new row. We additionally specify if a given matrix is an input or an output, and clearly mark the beginning and end of each example.
 
-![](README_files/arc 1.png)
+![](README_files/arc1.png)
 
 ### Training
 
