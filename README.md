@@ -1,4 +1,4 @@
-# Finetuning LLama3 on the ARC Prize
+# Finetuning Llama3 on the ARC Prize
 
 
 The [ARC Prize](https://arcprize.org/) has recently started a Kaggle competition. Previously the contest was dominated by "DSL" algorithms, but this time around it seems like LLMs might take the cake.
@@ -11,9 +11,9 @@ On public eval, Claude 3.5 and GPT-4o already achieve impressive results of 21% 
 
 
 So it seems prudent to check how far simple LLM approaches can go. 
-We will try to do this *cheaply* and *quickly*, which is why we will finetune LLama3-8B using a LoRA, achieving $12.75\%$ accuracy on the public eval task, beating GPT-4o using less than $10 in compute cost.
+We will try to do this *cheaply* and *quickly*, which is why we will finetune Llama3-8B using a LoRA, achieving $12.75\%$ accuracy on the public eval task, *beating GPT-4o* using less than $10 in compute cost.
 
-##### Hardware
+#### Hardware
 
 Finetuning LLMs, even with LoRA adapters can have high hardware requirements, often needing at least 20GB of VRAM. While this is a lot for consumer hardware, renting GPUs is cheap, so we can test our approach using a A10 GPU and a A100 GPU on the [Lambda GPU cloud](https://lambdalabs.com/service/gpu-cloud)
 
@@ -21,7 +21,7 @@ The whole training and inference pipeline runs for ~6h on A10 and ~3.5h on A100 
 
 
 
-#### The Problems
+### The Data
 
 
 ARC Problems have a visual format, which introduces additional complexity for Language Models, as they cannot easily reason over 2D data. To mitigate this we create additional ARC problems:
@@ -40,11 +40,14 @@ This not only helps the models to learn patterns in vertical directions, but als
 We convert each of these problems into a simple text format, making sure that there are no tokenization issues. This is done by simply representing the matrix as a string and adding linebreaks for each new row. We additionally specify if a given matrix is an input or an output, and clearly mark the beginning and end of each example.
 
 ![](README_files/arc 1.png)
-#### Training
 
-Using only the input-output examples for each Problem, we then finetune our model using 1-2 epochs on the collected data. To save some computation time and VRAM we use the unsloth library, which is easy to install:
+### Training
 
----
+We want to train our model on the input-output examples for each Problem. We aim for 3 epochs of training, as we want the model
+to learn the patterns in the data, but not overfit.
+In order to do so, we opt to use the unsloth library, which claims fast training times for LoRA adapters.
+
+
 ##### Setup
 
 Create and activate a virtual environment:
@@ -66,9 +69,9 @@ pip install "unsloth[cu121-torch220] @ git+https://github.com/unslothai/unsloth.
 and we are ready to go.
 
 
-##### Setting up LoRA
+##### The LoRA Adapter
 
-We use a LoRA model, with the following parameters:
+Using a LoRA adapter is simple, we load the model and then create the adapter using the `get_peft_model` function.
 
 ```python
 #create PEFT LoRA model
@@ -89,7 +92,8 @@ model = FastLanguageModel.get_peft_model(
 )
 ```
 
-and then we simply start training. 
+using this adapter, and our prepared data, we only need to specify some training parameters and we can start training.
+
 
 ![](README_files/20240724090235.png)
 
@@ -97,7 +101,7 @@ and then we simply start training.
 
 The ARC contest allows up to two predictions for each challenge. As noted before, LLMs do not reason well over 2D, as they use the 1D text representation. For this reason, we create our two guesses by predicting the normal challenge and the transposed challenge. This should help the LLM to solve problems that require a lot of vertical argumentation. 
 
-We produce results for these tasks, and simply ignore predictions with generation errors. We use top-k inference with $k=50$. In the end, we produce guesses for 339 of the 400 challenges.
+We produce results for these tasks, and simply ignore predictions with generation errors. We use top-k inference with $k=50$. The idea here is that this will prevent some mistakes which greedy sampling could easily run into. In the end, we produce valid guesses for 339 of the 400 challenges.
 In these 339 guesses there are 51 correctly solved Problems! This corresponds to a score of $12.75\%$
 
 
@@ -105,7 +109,7 @@ In these 339 guesses there are 51 correctly solved Problems! This corresponds to
 | ------------ | ----------- | ------------------- | --------------------- | ---------------------- |
 | 400          | 339         | 51                  | 38                    | 28                     |
 
-Our finetuned LLama3 models with some data augmentation beats the GPT-4o Baseline on the public eval dataset.
+Our finetuned Llama3 models with some data augmentation beats the GPT-4o Baseline on the public eval dataset.
 
 ##### Correct Prediction Examples
 
@@ -134,18 +138,16 @@ Our finetuned LLama3 models with some data augmentation beats the GPT-4o Baselin
 ---
 
 
-##### Common Failures of LLama and Conclusion
+##### Common Failures of Llama and Conclusion
 
-The LLama models often chose to repeat the last train output, instead of predicting a new guess. This might be caused by overfitting during training and can perhaps be mitigated by shuffling the input-output examples between epochs. Another issues was that LLama could not predict challenges that had a big input and output size, quickly running into token limits.
+The Llama models often chose to repeat the last train output, instead of predicting a new guess. This might be caused by overfitting during training and can perhaps be mitigated by shuffling the input-output examples between epochs. Another issues was that Llama could not predict challenges that had a big input and output size, quickly running into token limits.
 
-At the same time the base accuracy is already impressive, and LLama very rarely generated solutions that were formatted wrongly. The problems it can solve are not simple, and in the challenges it cannot solve, we have several near misses. It seems to work particularly well when the solution has repeating patterns or uses bite-wise operations of the input.
-
-Using Lambda GPUs this training cost less than x$ and finished in y time, showing that small models can rather cheaply be made competitive if finetuned well.
+At the same time the accuracy is already impressive, and Llama very rarely generated solutions that were formatted wrongly. The problems it can solve are not simple, and in the challenges it cannot solve, we have several near misses. It seems to work particularly well when the solution has repeating patterns or uses bit-wise operations of the input.
 
 
 
 
-#### Costs and time taken
+#### Time taken and costs
 
 |                    | A10               | A100              | H100             |
 | ------------------ | ----------------- | ----------------- | ---------------- |
