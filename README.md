@@ -28,9 +28,9 @@ ARC Problems have a visual format, which introduces additional complexity for La
 For each challenge we create 7 additional challenges, corresponding to rotation and transposition+rotation of the original problem. 
 
 I.e. if this is a valid challenge:
-![](README_files/20240723105247.png|500)
+![](README_files/20240723105247.png)
 Then so is this:
-![](README_files/20240723105234.png|500)
+![](README_files/20240723105234.png)
 
 This not only helps the models to learn patterns in vertical directions, but also increases our training data size eight-fold!
 
