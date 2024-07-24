@@ -6,7 +6,8 @@ The [ARC Prize](https://arcprize.org/) has recently started a Kaggle competition
 On public eval, Claude 3.5 and GPT-4o already achieve impressive results of 21% and 9% respectively at a Baseline.
 
 ![](README_files/20240722164652.png)
-(22.07.24 - https://arcprize.org/leaderboard ARC-AGI-Pub)
+
+> (22.07.24 - https://arcprize.org/leaderboard)
 
 
 So it seems prudent to check how far simple LLM approaches can go. 
