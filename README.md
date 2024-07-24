@@ -15,7 +15,7 @@ We will try to do this *cheaply* and *quickly*, which is why we will finetune Ll
 
 #### Hardware
 
-Finetuning LLMs, even with LoRA adapters can have high hardware requirements, often needing at least 20GB of VRAM. While this is a lot for consumer hardware, renting GPUs is cheap, so we can test our approach using a A10 GPU and a A100 GPU on the [Lambda GPU cloud](https://lambdalabs.com/service/gpu-cloud)
+Finetuning LLMs, even with LoRA adapters, can have substantial hardware requirements, often needing at least 20GB of VRAM. While this is a lot for consumer hardware, renting GPUs is cheap, so we can test our approach using a A10 GPU and a A100 GPU on the [Lambda GPU cloud](https://lambdalabs.com/service/gpu-cloud)
 
 The whole training and inference pipeline runs for ~6h on A10 and ~3.5h on A100 costing around $6 and $7.50 respectively.
 
@@ -37,15 +37,15 @@ This not only helps the models to learn patterns in vertical directions, but als
 
 ---
 
-We convert each of these problems into a simple text format, making sure that there are no tokenization issues. This is done by simply representing the matrix as a string and adding linebreaks for each new row. We additionally specify if a given matrix is an input or an output, and clearly mark the beginning and end of each example.
+We convert each of these problems into a simple text format, making sure that there are no tokenization problems. This is done by representing the matrix as a string and adding linebreaks for each new row. We additionally specify if a given matrix is an input or an output, and clearly mark the beginning and end of each example.
 
 ![](README_files/arc1.png)
 
 ### Training
 
 We want to train our model on the input-output examples for each Problem. We aim for 3 epochs of training, as we want the model
-to learn the patterns in the data, but not overfit.
-In order to do so, we opt to use the unsloth library, which claims fast training times for LoRA adapters.
+to learn the patterns in the data, but not to overfit.
+In order to do so, we opt to use the unsloth library, which claims fast training for LoRA adapters.
 
 
 ##### Setup
@@ -71,7 +71,7 @@ and we are ready to go.
 
 ##### The LoRA Adapter
 
-Using a LoRA adapter is simple, we load the model and then create the adapter using the `get_peft_model` function.
+Using a LoRA adapter is simple, we load the model and then create an adapter using the `get_peft_model` function.
 
 ```python
 #create PEFT LoRA model
@@ -99,9 +99,9 @@ using this adapter, and our prepared data, we only need to specify some training
 
 #### Prediction
 
-The ARC contest allows up to two predictions for each challenge. As noted before, LLMs do not reason well over 2D, as they use the 1D text representation. For this reason, we create our two guesses by predicting the normal challenge and the transposed challenge. Adding the transposed challenge should help to solve problems that require a lot of vertical argumentation. 
+The ARC contest allows up to two predictions for each challenge. As noted before, LLMs do not reason well over 2D, as they use the 1D text representation. For this reason, we create our two guesses by predicting the normal challenge and the transposed challenge. Adding the transposed challenge should help to solve problems that require a lot of vertical reasoning. 
 
-We produce results for these tasks, and simply ignore predictions with generation errors. We use top-k inference with $k=50$. The idea here is that this will prevent some mistakes which greedy sampling could easily run into. In the end, we produce valid guesses for 339 of the 400 challenges.
+We generate results for these tasks, and simply ignore predictions with parsing errors. We use top-k inference with $k=50$. The idea here is that this will prevent some mistakes which greedy sampling could easily run into. In the end, we produce valid guesses for 339 of the 400 challenges.
 In these 339 guesses there are 51 correctly solved Problems! This corresponds to a score of **12.75%**
 
 
@@ -115,11 +115,11 @@ Our finetuned Llama3 models with some data augmentation beats the GPT-4o Baselin
 
 ![](README_files/20240723102108.png)
 >"Restore the symmetric pattern"
-   I am surprised the LLM managed to solve this correctly. The action needed is not complex, but learning that action seems unlikely. The transposed prediction repeated a previous output.
+>   I am surprised the LLM managed to solve this correctly. The action needed is not complex, but learning that action seems unlikely. The transposed prediction repeated a previous output.
 
 ![](README_files/20240723102056.png)
 >"Extend the pattern, repeating the colors"
-   This is probably very easy, at the LLM can simply use a train output and remap the colors.
+>   This is probably very easy, as the LLM can simply use a train output and remap the colors.
 
 ![](README_files/20240723102041.png)
 > "Repeat the lines marked with grey"
@@ -128,34 +128,34 @@ Our finetuned Llama3 models with some data augmentation beats the GPT-4o Baselin
 > This is an overlay task, Brown>Yellow>Blue>Grey. 
 
 ![](README_files/20240723101932.png)
-> "Draw line between yellow points, permuting colors of cells between them" 
-   Here we see that the transposed version has an easier time, as it has to draw lines from left to right instead of up to down.
+> "Draw a line between yellow points, permuting colors of cells between them" 
+>  Here we see that the transposed version has an easier time, as it has to draw lines from left to right instead of up to down.
 
 ![](README_files/20240723101908.png)
 > "Shift the pixels based on color"
-   This is probably rather easy to learn for the LLM. The transposed version struggles, as it has to do the same task but from top to bottom instead of left to right
+>  This is probably rather easy to learn for the LLM. The transposed version struggles, as it has to do the same task but from top to bottom instead of left to right
 
 ---
 
 
 ##### Common Failures of Llama and Conclusion
 
-The Llama models often chose to repeat the last train output, instead of predicting a new guess. This might be caused by overfitting during training and can perhaps be mitigated by shuffling the input-output examples between epochs. Another issues was that Llama could not predict challenges that had a big input and output size, quickly running into token limits.
+The Llama models often chose to repeat the last train output, instead of predicting a new guess. This might be caused by overfitting during training and can perhaps be mitigated by shuffling the input-output examples between epochs. Another issue was that Llama could not predict challenges that had a big input and output size, quickly running into token limits.
 
-At the same time the accuracy is already impressive, and Llama very rarely generated solutions that were formatted wrongly. The problems it can solve are not simple, and in the challenges it cannot solve, we have several near misses. It seems to work particularly well when the solution has repeating patterns or uses bit-wise operations of the input.
-
-
+Even so, the model achieves an impressive accuracy and only rarely produces solutions that are formatted incorrectly. The problems it can solve are not simple, and in the challenges it cannot solve, we have several near misses. It seems to work particularly well when the solution has repeating patterns or uses bit-wise operations of the input.
 
 
-#### Time taken and costs
+
+
+#### Training time and costs
 
 |                    | A10               | A100              | H100             |
 | ------------------ | ----------------- | ----------------- | ---------------- |
 | Training Time      | 21207s (5h53m27s) | 12422s (3h27m02s) | 8243s (2h17m23s) |
-| Inference Time     | 7371s             | 8550s             | 7688s            |
+| Inference Time     | 7371s  (2h02m51s) | 8550s (2h22m30s)  | 7688s (2h08m08s) |
 | Hourly Cost        | $0.75             | $1.29             | $2.49            |
 | Training only Cost | $4.42             | $4.45             | $5.70            |
-| Final Cost     | $5.95             | $7.50             | $11.02           |
+| Final Cost         | $5.95             | $7.50             | $11.02           |
 
 
 
@@ -165,7 +165,7 @@ At the same time the accuracy is already impressive, and Llama very rarely gener
 Errors can be divided into 4 categories
 1. No solution generated/Generation could not be parsed
 2. Repetition of known seen training output
-3. Misunderstanding of Problem
+3. Misunderstanding of the problem
 4. Near misses
 
 Here we show some interesting cherry picked examples of the latter two categories:
@@ -188,7 +188,7 @@ Here we show some interesting cherry picked examples of the latter two categorie
 > The non-transposed version manages to correctly draw the horizontal line, the vertical line does not work at all
 
 ![](README_files/21_516b51b7.png)
-> Here the non-transposed prediction repeats a previous output, the transposed prediction almost understands the task, but fails to apply it completely
+> Here the non-transposed prediction repeats a previous output. The transposed prediction almost understands the task, but fails to apply it completely
 
 
 ![](README_files/21_0692e18c.png)
