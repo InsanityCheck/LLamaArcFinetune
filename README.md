@@ -41,6 +41,18 @@ We convert each of these problems into a simple text format, making sure that th
 
 ![](README_files/arc1.png)
 
+The data preperation is the most complex part of this project, but you can simply use our script. Save the [ARC Kaggle data](https://www.kaggle.com/competitions/arc-prize-2024/data) in a folder and use 
+
+```python3
+dataLoader = ArcKaggleDataLoader("data/arc_kaggle/")
+```
+
+You can then create the training datasets using the following code:
+
+```python3
+dataset = dataLoader.create_full_text_training_dataset(type=DataType.EVALUATION,transposed=True,rotated=True,transpose_rotated=True)
+```
+
 ## Training
 
 We want to train our model on the input-output examples for each Problem. We aim for 3 epochs of training, as we want the model
