@@ -154,7 +154,7 @@ def load(name):
 
     return model, tokenizer
 
-def evaluate_model(model,tokenizer,name):
+def evaluate_model(model,tokenizer,data_path,name):
     try:
         os.mkdir(name)
     except:
@@ -168,7 +168,7 @@ def evaluate_model(model,tokenizer,name):
     inf_start = time.time()
 
     #Reload data
-    dataLoaderTest = ArcKaggleDataLoader("data/arc_kaggle/")
+    dataLoaderTest = ArcKaggleDataLoader(data_path)
 
     #create evaluation dataset and change format
     x,y,problems = dataLoaderTest.create_full_text_evaluation_dataset(DataType.EVALUATION)
@@ -289,7 +289,7 @@ def main():
         model,tokenizer = load(name)
 
     if evaluate:
-        evaluate_model(model, tokenizer, data_path)
+        evaluate_model(model, tokenizer, data_path, name)
 
 
 if __name__ == "__main__":
