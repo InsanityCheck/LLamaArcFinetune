@@ -219,7 +219,7 @@ def evaluate_model(model,tokenizer,data_path,name):
 
 
             #Generate output
-            outputs = model.generate(**inputs, max_new_tokens = 1024, use_cache = True,do_sample=True, top_k=100, pad_token_id=tokenizer.eos_token_id)
+            outputs = model.generate(**inputs, max_new_tokens = 1024, use_cache = True,do_sample=True, top_k=16, pad_token_id=tokenizer.eos_token_id)
             result = tokenizer.batch_decode(outputs)
 
             
