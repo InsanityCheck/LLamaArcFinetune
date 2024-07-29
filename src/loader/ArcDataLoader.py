@@ -102,7 +102,7 @@ class ArcKaggleDataLoader():
             
             training_example = problem.get_problem_as_llm_string()
             x,y = problem.get_challenge_as_string()
-            training_example+= "[EXAMPLE START] \n"+x
+            training_example+= "[EXAMPLE START] \nINPUT: \n"+x
             
             AllTexts.append(training_example)
             problems.append(problem)
@@ -120,7 +120,7 @@ class ArcKaggleDataLoader():
             for p in other_problems:
                 training_example = p.get_problem_as_llm_string()
                 x,y = p.get_challenge_as_string()
-                training_example+= "[EXAMPLE START] \n"+x
+                training_example+= "[EXAMPLE START] \nINPUT: \n"+x
                 
                 AllTexts.append(training_example)
                 problems.append(problem)
