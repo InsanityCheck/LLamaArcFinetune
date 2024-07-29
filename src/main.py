@@ -268,7 +268,7 @@ def main():
     parser.add_argument('--training', required=True, action=argparse.BooleanOptionalAction, help='Whether to train the model')
     parser.add_argument('--evaluate', required=True, action=argparse.BooleanOptionalAction, help='Whether to evaluate the model')
     parser.add_argument('--save-name', type=str, default='llama3ArcFinetune', help='Name of savedata folders')
-    parser.add_argument('--epochs', type=int, default=10, help='Number of training epochs')
+    parser.add_argument('--epochs', type=int, default=4, help='Number of training epochs')
     parser.add_argument('--r', type=int, default=16, help='Rank of LoRA weights')
     parser.add_argument('--batch-size', type=int, default=2, help='Batch size for training')
 
